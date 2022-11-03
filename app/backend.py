@@ -11,11 +11,12 @@ def _clean_df(df: pd.DataFrame) -> pd.DataFrame:
     It works only with the dataframe provided during the neuefische DS Bootcamp!
     """
     # type date column as datetime object
-    df['date'] = pd.to_datetime(df['date'], format="%m/%d/%Y")
+    df['date'] = pd.to_datetime(df['date'], format="%m/%d/%Y").dt.date
     # type sqft_basement as numeric (will be float, because has NaNs)
     df['sqft_basement'] = pd.to_numeric(df['sqft_basement'], errors='coerce')
+    df['sqft_basement'] = df['sqft_basement'].replace(np.nan, 0)
     # replace 0 with np.nan in yr_renovated (there are only few places renovated)
-    df['yr_renovated'] = df['yr_renovated'].replace(0.0, np.nan)
+    df['yr_renovated'] = df['yr_renovated'].replace(0, np.nan)
 
     return df
 
@@ -53,30 +54,38 @@ def recommendations(df: pd.DataFrame, filter: dict, specialBool: dict) -> pd.Dat
 
         # booleans to check for True/False or Has/Has not (or other custom binary values)
         elif type(val) == bool:
+            print(f'backend.recommendations(): Filtering {key} for {val} values.')
             if type(df[key]) == bool: 
                 df = df[df[key] == val]
             
             # can also be used to check if value is not null or use customized booleans
             else: 
-                print(f"backend.recommendations(): Received boolean for key '{key}', but '{key}' is not a boolean. Will instead check for specialBool for '{key}'.")
+                print(f" --> received boolean for key '{key}', but '{key}' is not a boolean. Will instead check for specialBool for '{key}'.")
                 if key in specialBool.keys():
 
                     # if two values given, assign true and false
                     if len(specialBool[key]) == 2:
                         print(f" --> specialBool: True = {specialBool[key][0]}, False = {specialBool[key][1]}")
+                        print(f" --> Value given: {val}")
                         if val: df = df[df[key] == specialBool[key][0]]
                         else: df = df[df[key] == specialBool[key][1]]
+                    # if only one value given, assume it is the False value
                     else:
-                        print(f" --> specialBool: Setting True to 'not {specialBool[key][0]}' and False to '{specialBool[key][0]}'")
-                        if val: df = df[df[key] != specialBool[key][0]]
-                        else: df = df[df[key] == specialBool[key][0]]
+                        print(f" --> specialBool: True  = 'not {specialBool[key][0]}', False = '{specialBool[key][0]}'")
+                        print(f" --> Value given: {val}")
+                        if val: 
+                            print(f" --> Looking for: not {specialBool[key][0]}")
+                            df = df[df[key] != specialBool[key][0]]
+                        else: 
+                            print(f" --> Looking for: {specialBool[key][0]}")
+                            df = df[df[key] == specialBool[key][0]]
                 else:
                     print(f" --> No specialBool found for '{key}'. Skipping filterting.")
 
     print('---')
-    return df
+    return df.reset_index()
 
-def plot(df: pd.DataFrame, size: tuple = (600, 600)) -> px.scatter_mapbox:
+def plot(df: pd.DataFrame, size: tuple = (800, 600)) -> px.scatter_mapbox:
     """Returns a plotly object with geographical data.
 
     Args:
