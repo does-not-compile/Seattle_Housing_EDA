@@ -95,8 +95,16 @@ def plot(df: pd.DataFrame, size: tuple = (800, 600)) -> px.scatter_mapbox:
     Returns:
         plotly scatter_mapbox: Map with plotted data
     """
-    fig = px.scatter_mapbox(df, lat="lat", lon="long", hover_name="id", hover_data=["price", "zipcode"],
-                        color_discrete_sequence=["blue"], zoom=8.8, width=size[0], height=size[1])
+    fig = px.scatter_mapbox(df, lat="lat", lon="long",
+                            custom_data=['id', 'price', 'zipcode'], 
+                            color=df['zipcode'].astype('str'), zoom=8.8, width=size[0], height=size[1])
+
+    fig.update_traces(hovertemplate="<br>".join(["ID: %{customdata[0]}",
+                                                 "Price: $%{customdata[1]}",
+                                                 "ZIP: %{customdata[2]}",
+                                               ]),
+                      marker=dict(size=12))
+
     fig.update_layout(mapbox_style="open-street-map")
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     return fig

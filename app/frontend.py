@@ -57,7 +57,7 @@ with st.sidebar:
     with c2:
         basement = st.radio('Basement', options=["Don't care", 'Yes', 'No'])
 
-    zipcodes = st.multiselect('Preferred zipcodes', df['zipcode'].unique())
+    zipcodes = st.multiselect('Preferred zipcodes', df['zipcode'].sort_values(ascending=True).unique())
     
     d = {#'intent': intent,
         'price': tuple(b*1e6 for b in budget),
