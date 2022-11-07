@@ -1,36 +1,28 @@
-# ds-project-template
+# Seattle Housing: EDA
 
-Template for creating ds simple projects
+## Introduction
+This repository explores the King County Housing Dataset (years 2014 and 2015).
+### Exploratory Data Analysis
+You can find the EDA in the jupyter notebook **EDA.ipynb**. The dataset can be downloaded from kaggle.com [here](https://www.kaggle.com/datasets/doesnotcompile/nf-kc-house-data) and should be stored in ```./data/kc_house_data.csv``` relative to the EDA notebook.
+
+Note: since the notebook uses plotly for interactive maps, they will not show if you look at the notebook here on github. Instead, fork/clone the repository and compile it again in your IDE of choice.
+### Streamlit App
+I've also build a simple recommendation tool that filters data according to user input. It uses the [streamlit](https://streamlit.io) framework and can be found in the **app** folder. To run the app, simply execute the following command in your CLI:
+
+```sh
+streamlit run 'PATH_TO_APP/frontend.py'
+```
+
+The app will show in your internet browser. To stop the app, press <kbd>ctrl</kbd>+<kbd>c</kbd> while in your terminal.
 
 ## Requirements
 
-- pyenv
-- python==3.9.8
+To automatically creat a local python environment and install the requirements, you can run the following code in your CLI after navigating to the folder containing this repository:
 
-## Setup
-
-One of the first steps when starting any data science project is to create a virtual environment. For this project you have to create this environment from scratch yourself. However, you should be already familiar with the commands you will need to do so. The general workflow consists of... 
-
-* setting the python version locally to 3.9.8
-* creating a virtual environment using the `venv` module
-* activating your newly created environment 
-* upgrading `pip` (This step is not absolutely necessary, but will save you trouble when installing some packages.)
-* installing the required packages via `pip`
-
-At the end, you want to make sure that people who are interested in your project can create an identical environment on their own computer in order to be able to run your code without running into errors. Therefore you can create a `requirements file` and add it to your repository. You can create such a file by running the following command: 
-
-```bash
-pip freeze > requirements.txt
+```sh
+pyenv local 3.9.8
+python -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
 ```
-
-*Note: In rare case such a requirements file created with `pip freeze` might not ensure that another (especially M1 chip) user can install and execute it properly. This can happen if libraries need to be compiled (e.g. SciPy). Then it also depends on environment variables and the actual system libraries.*
-
-### Unit testing (Optional)
-
-If you write python scripts for your data processing methods, you can also write unit tests. In order to run the tests execute in terminal:
-
-```bash
-pytest
-```
-
-This command will execute all the functions in your project that start with the word **test**.
