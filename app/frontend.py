@@ -64,7 +64,6 @@ with st.sidebar:
         find = st.button('Get Recommendations', type='primary')
 
 if find:
-    print(zipcodes)
     # build filter dictionary
     d = {'price': tuple(b*1e6 for b in budget),
         'sqft_living': tuple(s*1e2 for s in sqft_living),
