@@ -4,6 +4,8 @@
 This repository explores the King County Housing Dataset (years 2014 and 2015).
 ### Exploratory Data Analysis
 You can find the EDA in the jupyter notebook **EDA.ipynb**. The dataset can be downloaded from kaggle.com [here](https://www.kaggle.com/datasets/doesnotcompile/nf-kc-house-data) and should be stored in ```./data/kc_house_data.csv``` relative to the EDA notebook.
+
+Note: since the notebook uses plotly for interactive maps, they will not show if you look at the notebook here on github. Instead, fork/clone the repository and compile it again in your IDE of choice.
 ### Streamlit App
 I've also build a simple recommendation tool that filters data according to user input. It uses the [streamlit](https://streamlit.io) framework and can be found in the **app** folder. To run the app, simply execute the following command in your CLI:
 
