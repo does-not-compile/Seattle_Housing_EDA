@@ -57,27 +57,32 @@ with st.sidebar:
     with c2:
         basement = st.radio('Basement', options=["Don't care", 'Yes', 'No'])
 
-    zipcodes = st.multiselect('Preferred zipcodes', df['zipcode'].sort_values(ascending=True).unique())
-    
-    d = {#'intent': intent,
-        'price': tuple(b*1e6 for b in budget),
-        'sqft_living': tuple(s*1e2 for s in sqft_living),
-        'bedrooms': bedrooms,
-        'bathrooms': bathrooms,
-        'yr_built': built,
-        'zipcode': zipcodes}
+    zipcodes = st.multiselect('Preferred zipcodes', ['central', *df['zipcode'].sort_values(ascending=True).unique()])
 
     c1, c2, c3 = st.columns([1, 4, 1])
     with c2:
         find = st.button('Get Recommendations', type='primary')
 
 if find:
+    print(zipcodes)
+    # build filter dictionary
+    d = {'price': tuple(b*1e6 for b in budget),
+        'sqft_living': tuple(s*1e2 for s in sqft_living),
+        'bedrooms': bedrooms,
+        'bathrooms': bathrooms,
+        'yr_built': built}
+
     map_yes_no = {'Yes': True, 'No': False}
     if waterfront != "Don't care":
         d['waterfront'] = map_yes_no[waterfront]
     if basement != "Don't care": 
         d['sqft_basement'] = map_yes_no[basement]
+    if 'central' in zipcodes:
+        d['zipcode'] = [z for z in df['zipcode'][df['zipcode'].between(98101, 98200)].sort_values().unique()]
+    else:
+        d['zipcode'] = zipcodes
 
+    # call recommender
     df_recommend = backend.recommendations(df=df,
                                            filter=d,
                                            specialBool={'waterfront': (1, 0), 
@@ -85,6 +90,8 @@ if find:
                                                             }
                                           )
     n_recs = df_recommend.shape[0]
+
+    # print out recommendations
     if n_recs == 0:
         st.error('No recommendations found :(')
         st.subheader('Oh no!')

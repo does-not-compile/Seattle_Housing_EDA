@@ -1,24 +1,26 @@
-# Exploratory Data Analysis & Simple Recommendation Tool
+# Seattle Housing: EDA
 
 ## Introduction
-This repository explores the King County Housing Dataset (years 2014 and 2015). You can find the EDA in the jupyter notebook **EDA.ipynb**.
+This repository explores the King County Housing Dataset (years 2014 and 2015).
+### Exploratory Data Analysis
+You can find the EDA in the jupyter notebook **EDA.ipynb**. The dataset can be downloaded from kaggle.com [here](https://www.kaggle.com/datasets/doesnotcompile/nf-kc-house-data) and should be stored in ```./data/kc_house_data.csv``` relative to the EDA notebook.
+### Streamlit App
+I've also build a simple recommendation tool that filters data according to user input. It uses the [streamlit](https://streamlit.io) framework and can be found in the **app** folder. To run the app, simply execute the following command in your CLI:
 
-I've also build a simple recommendation tool that filters data according to user input. It is build with streamlit and can be found in the **app** folder.
+```sh
+streamlit run 'PATH_TO_APP/frontend.py'
+```
 
-
-**Note: This repo is very alpha and currently undergoing development. A final version can be expected Tuesday, 8th of November 2022.**
+The app will show in your internet browser. To stop the app, press <kbd>ctrl</kbd>+<kbd>c</kbd> while in your terminal.
 
 ## Requirements
 
-```py
-pyenv
-python==3.9.8
-jupyterlab==3.2.6
-numpy==1.22.0
-pandas==1.3.5
-matplotlib==3.5.1
-seaborn==0.11.1
-plotly==5.11.0
-ipywidgets>=7.6
-streamlit
+To automatically creat a local python environment and install the requirements, you can run the following code in your CLI after navigating to the folder containing this repository:
+
+```sh
+pyenv local 3.9.8
+python -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
 ```
