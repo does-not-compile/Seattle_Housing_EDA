@@ -11,13 +11,15 @@ def _clean_df(df: pd.DataFrame) -> pd.DataFrame:
     It works only with the dataframe provided during the neuefische DS Bootcamp!
     """
     # type date column as datetime object
-    df['date'] = pd.to_datetime(df['date'], format="%m/%d/%Y").dt.date
+    df['date'] = pd.to_datetime(df['date'], format="%m/%d/%Y")
     # type sqft_basement as numeric (will be float, because has NaNs)
     df['sqft_basement'] = pd.to_numeric(df['sqft_basement'], errors='coerce')
-    df['sqft_basement'] = df['sqft_basement'].replace(np.nan, 0)
     # replace 0 with np.nan in yr_renovated (there are only few places renovated)
-    df['yr_renovated'] = df['yr_renovated'].replace(0, np.nan)
-
+    df['yr_renovated'].replace(0, pd.NaT, inplace=True)
+    df['yr_renovated'] = pd.to_datetime(df['yr_renovated'], errors='coerce')
+    # fix bedroom mistake
+    df['bedrooms'][df['bedrooms'] == 33] = 3
+    
     return df
 
 def recommendations(df: pd.DataFrame, filter: dict, specialBool: dict) -> pd.DataFrame:
