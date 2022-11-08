@@ -13,7 +13,7 @@ I've also build a simple recommendation tool that filters data according to user
 streamlit run 'PATH_TO_APP/frontend.py'
 ```
 
-The app will show in your internet browser. To stop the app, press <kbd>ctrl</kbd>+<kbd>c</kbd> while in your terminal.
+The app will show in your internet browser. To stop the app, press <kbd>ctrl</kbd> + <kbd>c</kbd> while in your terminal.
 
 ## Requirements
 
